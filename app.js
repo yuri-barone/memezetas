@@ -1,17 +1,7 @@
- var pessoasList = [];
- 
-/*construa uma função de validação para o seu cadastro, 
-esta função deve receber uma pessoa e exibir uma mensagem sempre que
-O Nome for em branco
-O Sobrenome for em Branco
-O email não conter '@'
+var pessoasList = [];
 
-*/
- 
+$(initializeForm);
 
- $(initializeForm)
-
-     
 function initializeForm(){
     clearMessage('success');
     clearMessage('danger');
@@ -27,9 +17,6 @@ function addPessoaToForm(pessoaIndex){
     setValueInField('Email', pessoa.email);
 }
 
-
-
- 
 function salvarForm() {
 
     var pessoa = {};
@@ -51,7 +38,6 @@ function salvarForm() {
     addPessoaToTable(pessoa);
     showMessage('Pessoa salva com sucesso!', "success");
 }
-
 
 function recuperarPessoas() {
     var pessoasString = localStorage.getItem('pessoas');
