@@ -1,3 +1,10 @@
+/*
+Fazer uma função que receba uma pessoa, e utilizando a função filter do array
+compare a pessoa recebida como argumento com as pessoas já existentes no array 
+e caso a pessoa já exista, não adicione a nova pessoa, e exiba uma mensagem
+que a pessoa com este nome e sobrenome já existe
+*/
+
 var pessoasList = [];
 
 $(initializeForm);
@@ -27,7 +34,10 @@ function salvarForm() {
     if (validatePessoa(pessoa) == false){
         return;
     }
-
+    if (validateExistingPeople(pessoa)){
+        showMessage("Pessoa já cadastrada", "danger");
+        return;
+    }    
     if (!pessoasList) {
         pessoasList = [];
     }
@@ -98,4 +108,12 @@ function validatePessoa(pessoa) {
         return false;
     } 
         return true;
+}
+
+function validateExistingPeople(pessoa) {
+    var pessoasRepetidas = pessoasList.filter(function (item) {
+        return pessoa.nome == item.nome && item.sobrenome == pessoa.sobrenome;
+    })
+    return pessoasRepetidas.length > 0;
+    
 }
