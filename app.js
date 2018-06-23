@@ -1,6 +1,10 @@
 /*
-1 - Antes de mostrar uma mensagem, certificar-se de que já não exista uma mensagem lá.
-2 - Utilizando o plugin meio-mask, adicione uma máscara para o telefone no
+1 - Adicionar um botão cancelar ao formulário, ao ser clicado a edição deve ser cancelada e 
+    listagem deve ser exibida
+2 - Adicionar na listagem um input e um botão filtrar, ao escrever algo no input, 
+    e ao clicar no botão filtrar, a lista deve mostrar apenas as pessoas que contiverem no seu nome,
+    o que foi digitado no input.
+    ex: 'Mar' deve exibir pessoas como 'Marcos', 'Marcelo', Marechal
 */
 
 var pessoasList = [];
@@ -178,4 +182,17 @@ function remove(event, pessoaId) {
 }
 function configureMask() {
    $('[data-mask]').setMask("phone");
+}
+
+function cancelEdit() {
+    window.location.href = "/yuri-workspaces/memezetas/Lista.html";
+}
+
+function filterPersonByInput() {
+   var inputFiltroVal = getValueFromField("Filter");
+   pessoasFiltradasPeloInput = pessoasList.filter(function(pessoa) {
+       return pessoa.nome.toUpperCase().match(inputFiltroVal.toUpperCase());
+   })
+   $('#table-body').empty();
+   addPessoasALista(pessoasFiltradasPeloInput);
 }
