@@ -1,12 +1,9 @@
 /*
-Fazer uma função que receba uma pessoa, e utilizando a função filter do array
-compare a pessoa recebida como argumento com as pessoas já existentes no array 
-e caso a pessoa já exista, não adicione a nova pessoa, e exiba uma mensagem
-que a pessoa com este nome e sobrenome já existe
+1 - Antes de mostrar uma mensagem, certificar-se de que já não exista uma mensagem lá.
+2 - Utilizando o plugin meio-mask, adicione uma máscara para o telefone no
 */
 
 var pessoasList = [];
-
 $(initializeForm);
 
 function initializeForm(){
@@ -14,6 +11,8 @@ function initializeForm(){
     clearMessage('danger');
     recuperarPessoas();
     addPessoasALista(pessoasList);
+    recoverSelectedPeople();
+    configureMask();
 }
 
 function addPessoaToForm(pessoaIndex){
@@ -25,12 +24,17 @@ function addPessoaToForm(pessoaIndex){
 }
 
 function salvarForm() {
-
+    var oldId = getValueFromField('Id');
     var pessoa = {};
     pessoa.nome = getValueFromField('Nome');
     pessoa.sobrenome = getValueFromField('Sobrenome');
     pessoa.telefone = getValueFromField('Telefone');
     pessoa.email = getValueFromField('Email');
+    if (oldId) {
+        pessoa.id = oldId
+    } else {
+        pessoa.id = getNewId();
+    }
     if (validatePessoa(pessoa) == false){
         return;
     }
@@ -43,7 +47,7 @@ function salvarForm() {
     }
     pessoasList.push(pessoa);
     var pessoasJson = JSON.stringify(pessoasList);
-    localStorage.setItem("pessoas",pessoasJson);   
+    localStorage.setItem("pessoas", pessoasJson);   
     clearForm();
     addPessoaToTable(pessoa);
     showMessage('Pessoa salva com sucesso!', "success");
@@ -75,6 +79,7 @@ function clearForm() {
 }
 
 function showMessage(message, tipo) {
+    clearMessage('success');
     $('.form-' + tipo + '-msg').append(`<p>${message}</p>`);
     $('.form-' + tipo + '-msg').fadeIn();
 }
@@ -85,12 +90,12 @@ function clearMessage(tipo) {
 }
 
 function addPessoaToTable(pessoa) {
-    var pessoaLinha = `<tr><td>${pessoa.nome}</td><td>${pessoa.sobrenome}</td><td>${pessoa.telefone}</td><td>${pessoa.email}</td></tr>`;
+    var pessoaLinha = `<tr onclick="editPessoa(${pessoa.id})"><td>${pessoa.nome}</td><td>${pessoa.sobrenome}</td><td>${pessoa.telefone}</td><td>${pessoa.email}</td><td><span class="btn btn-danger" id="btDelete" onClick="remove(event, ${pessoa.id})">Remover</span></td></tr>`;
     $('#table-body').append(pessoaLinha);
 }
 
 function addPessoasALista(arrayPessoas) {
-    pessoasList.map(addPessoaToTable);    
+    arrayPessoas.map(addPessoaToTable);    
 }
 
 function validatePessoa(pessoa) {
@@ -112,8 +117,65 @@ function validatePessoa(pessoa) {
 
 function validateExistingPeople(pessoa) {
     var pessoasRepetidas = pessoasList.filter(function (item) {
-        return pessoa.nome == item.nome && item.sobrenome == pessoa.sobrenome;
+        return pessoa.nome == item.nome && item.sobrenome == pessoa.sobrenome && item.id != pessoa.id;
     })
     return pessoasRepetidas.length > 0;
     
+}
+
+function editPessoa(pessoaId) {
+        window.location.href = "/yuri-workspaces/memezetas/Formulario.html#" + pessoaId;
+}
+
+function getNewId() {
+    var date = new Date();
+    var componentsId = [
+        date.getYear(),
+        date.getMonth(),
+        date.getDate(),
+        date.getHours(),
+        date.getMinutes(),
+        date.getSeconds(),
+        date.getMilliseconds()
+    ];
+    return componentsId.join("");
+}
+
+function getIdFromUrl() {
+    var url = window.location.href
+    var idUrl = url.match(/\d+/);
+    if (!idUrl) {
+        return;
+    }
+    return idUrl[0];
+}
+
+function recoverSelectedPeople() {
+    var selectedPersonId = getIdFromUrl();
+    if (!selectedPersonId) {
+        return;
+    }
+    var filteredPeople = pessoasList.filter(function(pessoa) {
+        return pessoa.id == selectedPersonId;
+    });
+    var pessoaSelecionada = filteredPeople.pop();
+    setValueInField('Nome', pessoaSelecionada.nome);
+    setValueInField('Sobrenome', pessoaSelecionada.sobrenome);
+    setValueInField('Telefone', pessoaSelecionada.telefone);
+    setValueInField('Email', pessoaSelecionada.email);
+    setValueInField('Id', pessoaSelecionada.id);
+}
+
+function remove(event, pessoaId) {
+    event.stopImmediatePropagation();
+    pessoasList = pessoasList.filter(function(pessoa){
+        return pessoa.id != pessoaId;
+    })
+    pessoasJSON = JSON.stringify(pessoasList)
+    localStorage.setItem('pessoas', pessoasJSON);
+    $('#table-body').empty();
+    addPessoasALista(pessoasList);
+}
+function configureMask() {
+   $('[data-mask]').setMask("phone");
 }
