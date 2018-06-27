@@ -23,7 +23,7 @@
 
     <nav class="navbar navbar-static-top navbar-expand-lg bg-gradient-success">
         <div class="container">
-            <a class="navbar-brand h1 mb-0" href="/yuri-workspaces/memezetas/Index.html">MemeZetas</a>
+            <a class="navbar-brand h1 mb-0" href="Index.html">MemeZetas</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSite">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -31,13 +31,13 @@
 
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/yuri-workspaces/memezetas/Index.html">Inicio</a>
+                        <a class="nav-link" href="Index.html">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/yuri-workspaces/memezetas/Formulario.html">Formulário</a>
+                        <a class="nav-link" href="Formulario.html">Formulário</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/yuri-workspaces/memezetas/Lista.html">Lista</a>
+                        <a class="nav-link" href="Lista.html">Lista</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
@@ -64,9 +64,9 @@
             </div>
         </div>
         <div class="row justify-content-center mb-5">
-            <div class="col-sm-12 col-md-10 col-lg-8">
+            <div class="container my-5">
                 <form id="formularioLegal">
-                    <div class="form-row">
+                    <div class="row">
                         <div class="form-group col-sm-6">
                             <label for="inputNome">Nome</label>
                             <input type="text" class="form-control" id="inputNome" placeholder="Nome">
@@ -75,6 +75,8 @@
                             <label for="inputSobrenome">Sobrenome</label>
                             <input type="text" class="form-control" id="inputSobrenome" placeholder="Sobrenome">
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="form-group col-sm-6">
                             <label for="inputTelefone">Telefone</label>
                             <input type="text" data-mask="phone" class="form-control" id="inputTelefone" placeholder="Ex.: (00) 00000-0000">
@@ -83,7 +85,34 @@
                             <label for="inputEmail">Email</label>
                             <input type="email" class="form-control" id="inputEmail" placeholder="Email">
                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-4">
+                            <label for="inputCep">Cep</label>
+                            <input type="text" data-mask="cep"class="form-control" id="inputCep" placeholder="Cep" onblur="getApiCep()">
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="inputNumero">Número</label>
+                            <input type="number" class="form-control" id="inputNumero" placeholder="Número">
+                        </div>
+                    
+                        <div class="form-group col-sm-4">
+                            <label for="inputRua">Rua</label>
+                            <input type="text" class="form-control" id="inputRua" placeholder="Rua">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <label for="inputEstado">Estado</label>
+                            <input type="text" class="form-control" id="inputEstado" placeholder="Estado">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="inputCidade">Cidade</label>
+                            <input type="text" class="form-control" id="inputCidade" placeholder="Cidade">
+                        </div>
+                    </div>
                         <span class="btn btn-success" id="btSalvar" onClick="salvarForm()">Adicionar</span>
+                        <span class="btn btn-primary ml-2" onclick="clearForm()">Limpar</span>
                         <span class="btn btn-secondary ml-2" onclick="cancelEdit()">Cancelar</span>
                     </div>
                 </form>

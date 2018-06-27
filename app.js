@@ -1,10 +1,8 @@
 /*
-1 - Adicionar um botão cancelar ao formulário, ao ser clicado a edição deve ser cancelada e 
-    listagem deve ser exibida
-2 - Adicionar na listagem um input e um botão filtrar, ao escrever algo no input, 
-    e ao clicar no botão filtrar, a lista deve mostrar apenas as pessoas que contiverem no seu nome,
-    o que foi digitado no input.
-    ex: 'Mar' deve exibir pessoas como 'Marcos', 'Marcelo', Marechal
+1 - Criar no formulário uma nova seção, para que seja registrado o endereço do usuário
+    com os seguintes campos: cep, logradouro, número, cidade e estado
+
+2 - utilizar a api viacep para carregar automáticamente o endereço quando terminamos de digitar o
 */
 
 var pessoasList = [];
@@ -34,6 +32,11 @@ function salvarForm() {
     pessoa.sobrenome = getValueFromField('Sobrenome');
     pessoa.telefone = getValueFromField('Telefone');
     pessoa.email = getValueFromField('Email');
+    pessoa.cep = getValueFromField('Cep');
+    pessoa.numero = getValueFromField('Numero');
+    pessoa.rua = getValueFromField('Rua');
+    pessoa.estado = getValueFromField('Estado');
+    pessoa.cidade = getValueFromField('Cidade');
     if (oldId) {
         pessoa.id = oldId
     } else {
@@ -80,6 +83,11 @@ function clearForm() {
     setValueInField('Sobrenome','');
     setValueInField('Telefone','');
     setValueInField('Email','');
+    setValueInField('Cep', '');
+    setValueInField('Numero', '');
+    setValueInField('Rua', '');
+    setValueInField('Estado', '');
+    setValueInField('Cidade', '');
 }
 
 function showMessage(message, tipo) {
@@ -128,7 +136,7 @@ function validateExistingPeople(pessoa) {
 }
 
 function editPessoa(pessoaId) {
-        window.location.href = "/yuri-workspaces/memezetas/Formulario.html#" + pessoaId;
+        window.location.href = "Formulario.html?pessoaId=" + pessoaId;
 }
 
 function getNewId() {
@@ -146,12 +154,13 @@ function getNewId() {
 }
 
 function getIdFromUrl() {
-    var url = window.location.href
-    var idUrl = url.match(/\d+/);
+    var urlString = window.location.href
+    var url = new URL(urlString);
+    var idUrl = url.searchParams.get("pessoaId");
     if (!idUrl) {
         return;
     }
-    return idUrl[0];
+    return idUrl;
 }
 
 function recoverSelectedPeople() {
@@ -180,12 +189,15 @@ function remove(event, pessoaId) {
     $('#table-body').empty();
     addPessoasALista(pessoasList);
 }
-function configureMask() {
-   $('[data-mask]').setMask("phone");
-}
 
+function configureMask() {
+  $('input[data-mask]').each(function() {
+    var input = $(this);
+    input.setMask(input.data('mask'));
+  });
+}
 function cancelEdit() {
-    window.location.href = "/yuri-workspaces/memezetas/Lista.html";
+    window.location.href = "Lista.html";
 }
 
 function filterPersonByInput() {
@@ -195,4 +207,21 @@ function filterPersonByInput() {
    })
    $('#table-body').empty();
    addPessoasALista(pessoasFiltradasPeloInput);
+}
+
+function getApiCep() {
+    var cepVal = getValueFromField('Cep'); 
+    cepVal = cepVal.replace(/-/g, "");
+    var validaCep = /^[0-9]{8}$/;
+    if (validaCep.test(cepVal)) {
+        $.getJSON("https://viacep.com.br/ws/"+ cepVal +"/json/").then(onLoadbyCepSuccess);;
+        
+    } 
+
+}
+
+function onLoadbyCepSuccess(response){
+    setValueInField('Rua', response.logradouro);
+    setValueInField('Estado', response.uf);
+    setValueInField('Cidade', response.localidade);
 }
