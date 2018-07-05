@@ -12,7 +12,12 @@
     <script src="node_modules/jquery/dist/jquery.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <script src="node_modules/meiomask/dist/meiomask.js"></script>
-    <script src="app.js"></script>
+    <script src="assets/js/lista.js"></script>
+    <script src="assets/js/uruFields.js"></script>
+    <script src="assets/js/formulario.js"></script>
+    <script src="assets/js/uruDB.js"></script>
+    <script src="assets/js/app.js"></script>
+    
 
     
     
@@ -89,7 +94,7 @@
                     <div class="row">
                         <div class="form-group col-sm-4">
                             <label for="inputCep">Cep</label>
-                            <input type="text" data-mask="cep"class="form-control" id="inputCep" placeholder="Cep" onblur="getApiCep()">
+                            <input type="text" data-mask="cep"class="form-control" id="inputCep" placeholder="Cep" onblur="formF.getApiCep()">
                         </div>
                         <div class="form-group col-sm-4">
                             <label for="inputNumero">Número</label>
@@ -111,9 +116,9 @@
                             <input type="text" class="form-control" id="inputCidade" placeholder="Cidade">
                         </div>
                     </div>
-                        <span class="btn btn-success" id="btSalvar" onClick="salvarForm()">Adicionar</span>
-                        <span class="btn btn-primary ml-2" onclick="clearForm()">Limpar</span>
-                        <span class="btn btn-secondary ml-2" onclick="cancelEdit()">Cancelar</span>
+                        <span class="btn btn-success" id="btSalvar" onClick="formF.createPessoa()">Adicionar</span>
+                        <span class="btn btn-primary ml-2" onclick="formF.clearForm()">Limpar</span>
+                        <span class="btn btn-secondary ml-2" onclick="formF.cancelEdit()">Cancelar</span>
                     </div>
                 </form>
             </div>

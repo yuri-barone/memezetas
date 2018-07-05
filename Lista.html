@@ -11,7 +11,11 @@
     <script src="node_modules/jquery/dist/jquery.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <script src="node_modules/meiomask/dist/meiomask.js"></script>
-    <script src="app.js"></script>
+    <script src="assets/js/lista.js"></script>
+    <script src="assets/js/uruFields.js"></script>
+    <script src="assets/js/uruDB.js"></script>
+    <script src="assets/js/formulario.js"></script>
+    <script src="assets/js/app.js"></script>
 </head>
 
 <body>
@@ -50,9 +54,9 @@
         </div>
     </nav>
     <div class="input-group container my-5">
-        <input type="text" class="form-control" id="inputFilter" placeholder="Procurar por" oninput="filterPersonByInput()">
+        <input type="text" class="form-control" id="inputFilter" placeholder="Procurar por" oninput="listaF.filterPersonByInput()">
         <span class="input-group-btn">
-            <button class="btn btn-default"  onclick="filterPersonByInput()">Filtrar</button>
+            <button class="btn btn-default"  onclick="listaF.filterPersonByInput()">Filtrar</button>
         </span>
     </div>
     </div>
